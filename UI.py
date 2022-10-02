@@ -7,10 +7,11 @@ from tkinter.messagebox import askokcancel, showinfo, WARNING
 import PIL
 import numpy as np
 import tensorflow as tf
-import pydicom as dicom
+import pydicom as dicom  # Esta libreria genera problemas de ejecucion, estamos usando jpeg, por tanto pydicom no es necesario
 import Back
-import inference
+import inference  # Import que no es usado en el codigo
 import tkcap
+
 
 class App:
     def __init__(self):
@@ -94,35 +95,33 @@ class App:
         #   RUN LOOP
         self.root.mainloop()
 
-
     def Model(self):
         global img2
-        
-        img2,self.label,self.proba=Back.run_model()
-        
+
+        # De pronto es mas convenientes usar img2 como un atributo de la clase y no como una variable global
+        img2, self.label, self.proba = Back.run_model()
+
         self.text_img2.image_create(END, image=img2)
         self.text2.insert(END, self.label)
-        self.text3.insert(END, "{:.2f}".format(self.proba)+"%")
+        self.text3.insert(END, "{:.2f}".format(self.proba) + "%")
 
-    
-    
     def Limpiar(self):
         answer = Back.delete()
         if answer:
-         self.text1.delete(0, "end")
-         self.text2.delete(1.0, "end")
-         self.text3.delete(1.0, "end")
-         self.text_img1.delete(img1, "end")
-         self.text_img2.delete(img2, "end")
-         showinfo(title="Borrar", message="Los datos se borraron con éxito")
-    
-    def img_load_UI(self): ## ob
+            self.text1.delete(0, "end")
+            self.text2.delete(1.0, "end")
+            self.text3.delete(1.0, "end")
+            self.text_img1.delete(img1, "end")
+            self.text_img2.delete(img2, "end")
+            showinfo(title="Borrar", message="Los datos se borraron con éxito")
+
+    def img_load_UI(self):  ## ob
         global img1
-        img1=Back.load_img_file(self)
+        img1 = Back.load_img_file(self)
         self.text_img1.image_create(END, image=img1)
         self.button1["state"] = "enabled"
-        return img1           
-            
+        return img1
+
 
 def main():
     my_app = App()
